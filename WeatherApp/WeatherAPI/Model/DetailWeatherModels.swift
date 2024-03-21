@@ -57,3 +57,7 @@ struct Wind: Decodable {
         case gust = "gust"
     }
 }
+
+struct Clouds: Decodable {
+    let all: Int
+}

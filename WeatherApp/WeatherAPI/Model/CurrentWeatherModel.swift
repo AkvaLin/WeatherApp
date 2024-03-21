@@ -12,18 +12,16 @@ struct CurrentWeatherModel: Decodable {
     let main: Main
     let visibility: Int
     let wind: Wind
+    let clouds: Clouds
     let timestamp: Int
 
     enum CodingKeys: String, CodingKey {
-        case coord = "coord"
         case weather = "weather"
-        case base = "base"
         case main = "main"
         case visibility = "visibility"
         case wind = "wind"
         case clouds = "clouds"
         case timestamp = "dt"
-        case sys = "sys"
     }
     
     init(from decoder: Decoder) throws {
@@ -32,6 +30,7 @@ struct CurrentWeatherModel: Decodable {
         main = try values.decode(Main.self, forKey: .main)
         visibility = try values.decode(Int.self, forKey: .visibility)
         wind = try values.decode(Wind.self, forKey: .wind)
+        clouds = try values.decode(Clouds.self, forKey: .clouds)
         timestamp = try values.decode(Int.self, forKey: .timestamp)
     }
 }
