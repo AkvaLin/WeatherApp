@@ -13,6 +13,8 @@ class ViewModel {
     
     @Published private(set) var weatherModel: WeatherModel?
     @Published private(set) var forecastModel: [ForecastModel] = []
+    @Published private(set) var countryTitleText = ""
+    @Published private(set) var cityTitleText = ""
     private let weatherApi = WeatherAPIManager()
     private let locationManager = LocationManager()
     
@@ -40,6 +42,23 @@ class ViewModel {
                     case .failure(let failure):
                         NSLog("%@", failure.localizedDescription)
                     }
+                }
+            }
+            
+            locationManager.updateGeocode { [weak self] (city, area, county) in
+                guard let self = self else { return }
+                if let country = county {
+                    if let city = city {
+                        self.cityTitleText = city
+                        print("A")
+                    } else if let area = area {
+                        self.cityTitleText = area
+                        print("B")
+                    }
+                    self.countryTitleText = country
+                } else {
+                    self.countryTitleText = ""
+                    self.cityTitleText = ""
                 }
             }
         }

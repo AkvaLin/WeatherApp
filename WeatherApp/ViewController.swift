@@ -13,16 +13,16 @@ class ViewController: UIViewController {
     private let gradientLayer = CAGradientLayer()
     private let cityLabel = {
         let lbl = UILabel()
-        lbl.text = "Moscow"
         lbl.font = .preferredFont(forTextStyle: .largeTitle)
         lbl.textColor = .vkForeground
+        lbl.adjustsFontSizeToFitWidth = true
         return lbl
     }()
-    private let locationLabel = {
+    private let countryLabel = {
         let lbl = UILabel()
-        lbl.text = "Russia"
         lbl.font = .preferredFont(forTextStyle: .title2)
         lbl.textColor = .vkForeground
+        lbl.adjustsFontSizeToFitWidth = true
         return lbl
     }()
     private let weatherImageView = {
@@ -161,7 +161,7 @@ class ViewController: UIViewController {
         gradientLayer.frame = view.bounds
         
         cityLabel.translatesAutoresizingMaskIntoConstraints = false
-        locationLabel.translatesAutoresizingMaskIntoConstraints = false
+        countryLabel.translatesAutoresizingMaskIntoConstraints = false
         weatherImageView.translatesAutoresizingMaskIntoConstraints = false
         weatherMainDataView.translatesAutoresizingMaskIntoConstraints = false
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -181,11 +181,11 @@ class ViewController: UIViewController {
             cityLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             cityLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             
-            locationLabel.leadingAnchor.constraint(equalTo: cityLabel.leadingAnchor),
-            locationLabel.trailingAnchor.constraint(equalTo: cityLabel.trailingAnchor),
-            locationLabel.topAnchor.constraint(equalTo: cityLabel.bottomAnchor),
+            countryLabel.leadingAnchor.constraint(equalTo: cityLabel.leadingAnchor),
+            countryLabel.trailingAnchor.constraint(equalTo: cityLabel.trailingAnchor),
+            countryLabel.topAnchor.constraint(equalTo: cityLabel.bottomAnchor),
             
-            weatherImageView.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 30),
+            weatherImageView.topAnchor.constraint(equalTo: countryLabel.bottomAnchor, constant: 30),
             weatherImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 30),
             weatherImageView.widthAnchor.constraint(equalToConstant: weatherDataViewHeightWidth),
             weatherImageView.heightAnchor.constraint(equalToConstant: weatherDataViewHeightWidth),
@@ -251,7 +251,7 @@ class ViewController: UIViewController {
         
         view.layer.addSublayer(gradientLayer)
         view.addSubview(cityLabel)
-        view.addSubview(locationLabel)
+        view.addSubview(countryLabel)
         view.addSubview(weatherImageView)
         view.addSubview(weatherMainDataView)
         view.addSubview(weatherDetailsDataView)
@@ -297,10 +297,23 @@ class ViewController: UIViewController {
                 self.windSpeedDataView.setupData(text: weather.windSpeed)
                 self.windDirectionDataView.setupData(text: weather.windDeg)
             }.store(in: &cancellables)
+        
         viewModel.$forecastModel
             .receive(on: RunLoop.main)
             .sink { [weak self] forecast in
                 self?.forecastTableView.reloadData()
+            }.store(in: &cancellables)
+        
+        viewModel.$cityTitleText
+            .receive(on: RunLoop.main)
+            .sink { [weak self] text in
+                self?.cityLabel.text = text
+            }.store(in: &cancellables)
+        
+        viewModel.$countryTitleText
+            .receive(on: RunLoop.main)
+            .sink { [weak self] text in
+                self?.countryLabel.text = text
             }.store(in: &cancellables)
     }
     
