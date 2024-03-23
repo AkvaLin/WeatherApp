@@ -24,7 +24,6 @@ final class LocationManager: NSObject {
     }
     
     public func requestAuthorization() {
-        manager.delegate = self
         if manager.authorizationStatus != .authorizedWhenInUse {
             manager.requestWhenInUseAuthorization()
         }
@@ -52,11 +51,9 @@ final class LocationManager: NSObject {
         }
     }
     
-    // TODO: LocalSearch
-}
-
-extension LocationManager: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        updateCurrentLocation()
+    public func setupDelegate(delegate: CLLocationManagerDelegate) {
+        manager.delegate = delegate
     }
+    
+    // TODO: LocalSearch
 }

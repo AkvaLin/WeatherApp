@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import CoreLocation
 
-class ViewModel {
+class ViewModel: NSObject {
     
     @Published private(set) var weatherModel: WeatherModel?
     @Published private(set) var forecastModel: [ForecastModel] = []
@@ -19,8 +19,8 @@ class ViewModel {
     private let locationManager = LocationManager()
     
     public func onAppear() {
+        locationManager.setupDelegate(delegate: self)
         locationManager.requestAuthorization()
-        updateCurrentData()
     }
     
     private func updateCurrentData() {
@@ -50,10 +50,8 @@ class ViewModel {
                 if let country = county {
                     if let city = city {
                         self.cityTitleText = city
-                        print("A")
                     } else if let area = area {
                         self.cityTitleText = area
-                        print("B")
                     }
                     self.countryTitleText = country
                 } else {
@@ -214,5 +212,11 @@ class ViewModel {
         let directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
         let index = Int((heading / 45).rounded()) % 8
         return directions[index]
+    }
+}
+
+extension ViewModel: CLLocationManagerDelegate {
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        updateCurrentData()
     }
 }
