@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct ForecastModel: Decodable {
-    let list: [CurrentWeatherModel]
+struct ForecastDTO: Decodable {
+    let list: [CurrentWeatherDTO]
 }

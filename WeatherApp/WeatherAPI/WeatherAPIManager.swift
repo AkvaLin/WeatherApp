@@ -22,7 +22,7 @@ class WeatherAPIManager {
     
     public func getCurrentWeather(lat: Double,
                                   lon: Double,
-                                  completion: @escaping (Result<CurrentWeatherModel, WeatherAPIErrors>) -> Void) {
+                                  completion: @escaping (Result<CurrentWeatherDTO, WeatherAPIErrors>) -> Void) {
         guard let url = getURL(lat: lat, lon: lon, type: .currentWeather) else {
             completion(.failure(.badURL))
             return
@@ -32,7 +32,7 @@ class WeatherAPIManager {
             switch result {
             case .success(let data):
                 do {
-                    let weather = try JSONDecoder().decode(CurrentWeatherModel.self, from: data)
+                    let weather = try JSONDecoder().decode(CurrentWeatherDTO.self, from: data)
                     completion(.success(weather))
                 } catch {
                     completion(.failure(.decodeError))
@@ -45,7 +45,7 @@ class WeatherAPIManager {
     
     public func getForecast(lat: Double,
                             lon: Double,
-                            completion: @escaping (Result<ForecastModel, WeatherAPIErrors>) -> Void) {
+                            completion: @escaping (Result<ForecastDTO, WeatherAPIErrors>) -> Void) {
         guard let url = getURL(lat: lat, lon: lon, type: .forecast) else {
             completion(.failure(.badURL))
             return
@@ -55,7 +55,7 @@ class WeatherAPIManager {
             switch result {
             case .success(let data):
                 do {
-                    let forecast = try JSONDecoder().decode(ForecastModel.self, from: data)
+                    let forecast = try JSONDecoder().decode(ForecastDTO.self, from: data)
                     completion(.success(forecast))
                 } catch {
                     completion(.failure(.decodeError))
