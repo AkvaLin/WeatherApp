@@ -311,7 +311,7 @@ class ViewController: UIViewController {
         
         viewModel.$forecastModel
             .receive(on: RunLoop.main)
-            .sink { [weak self] forecast in
+            .sink { [weak self] _ in
                 self?.forecastTableView.reloadData()
             }.store(in: &cancellables)
         
@@ -333,9 +333,9 @@ class ViewController: UIViewController {
     }
     
     @objc private func search() {
-        let vc = SearchViewController()
-        vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
+        let searchVC = SearchViewController()
+        searchVC.delegate = self
+        navigationController?.pushViewController(searchVC, animated: true)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -351,7 +351,12 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ForecastCell.identifier, for: indexPath) as? ForecastCell else { fatalError("TableView couldn't dequeue ForecastCell") }
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: ForecastCell.identifier, 
+                                                     for: indexPath) as? ForecastCell
+        else {
+            fatalError("TableView couldn't dequeue ForecastCell")
+        }
         
         let data = viewModel.forecastModel[indexPath.row]
         

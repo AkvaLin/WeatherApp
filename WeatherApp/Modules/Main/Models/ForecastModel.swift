@@ -5,8 +5,6 @@
 //  Created by Никита Пивоваров on 23.03.2024.
 //
 
-import Foundation
-
 struct ForecastModel {
     
     struct ForecastWeatherModel {

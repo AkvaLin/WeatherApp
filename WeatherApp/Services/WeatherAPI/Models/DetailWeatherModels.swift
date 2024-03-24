@@ -10,20 +10,15 @@ import Foundation
 struct WeatherDTO: Decodable {
     let main: String
     let icon: String
-
-    enum CodingKeys: String, CodingKey {
-        case main = "main"
-        case icon = "icon"
-    }
 }
 
 struct MainDTO: Decodable {
-    let temp : Double
-    let feelsLike : Double
-    let tempMin : Double
-    let tempMax : Double
-    let pressure : Int
-    let humidity : Int
+    let temp: Double
+    let feelsLike: Double
+    let tempMin: Double
+    let tempMax: Double
+    let pressure: Int
+    let humidity: Int
 
     enum CodingKeys: String, CodingKey {
 
@@ -37,13 +32,8 @@ struct MainDTO: Decodable {
 }
 
 struct WindDto: Decodable {
-    let speed : Double
-    let deg : Int
-
-    enum CodingKeys: String, CodingKey {
-        case speed = "speed"
-        case deg = "deg"
-    }
+    let speed: Double
+    let deg: Int
 }
 
 struct CloudsDTO: Decodable {

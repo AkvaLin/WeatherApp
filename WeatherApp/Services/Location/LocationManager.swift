@@ -5,7 +5,6 @@
 //  Created by Никита Пивоваров on 21.03.2024.
 //
 
-import Foundation
 import CoreLocation
 
 final class LocationManager: NSObject {
@@ -29,20 +28,22 @@ final class LocationManager: NSObject {
         }
     }
 
-    public func updateGeocode(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping ((city: String?, area: String?, country: String?)) -> Void) {
-        geoCoder.reverseGeocodeLocation(CLLocation(latitude: lat, longitude: lon)) { placemark, error in
+    public func updateGeocode(lat: CLLocationDegrees,
+                              lon: CLLocationDegrees,
+                              completion: @escaping ((area: String?, country: String?)) -> Void) {
+        geoCoder.reverseGeocodeLocation(CLLocation(latitude: lat, longitude: lon)) { placemark, _ in
             guard let placemark = placemark?.first else {
-                completion((nil, nil, nil))
+                completion((nil, nil))
                 return
             }
             if let country = placemark.country {
                 if let city = placemark.locality {
-                    completion((city, nil, country))
+                    completion((city, country))
                 } else if let area = placemark.administrativeArea {
-                    completion((nil, area, country))
+                    completion((area, country))
                 }
             } else {
-                completion((nil, nil, nil))
+                completion((nil, nil))
             }
         }
     }
@@ -50,6 +51,4 @@ final class LocationManager: NSObject {
     public func setupDelegate(delegate: CLLocationManagerDelegate) {
         manager.delegate = delegate
     }
-    
-    // TODO: LocalSearch
 }

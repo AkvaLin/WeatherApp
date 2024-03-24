@@ -5,7 +5,6 @@
 //  Created by Никита Пивоваров on 22.03.2024.
 //
 
-import Foundation
 import UIKit
 
 struct WeatherModel {

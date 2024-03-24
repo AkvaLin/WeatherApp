@@ -5,8 +5,6 @@
 //  Created by Никита Пивоваров on 20.03.2024.
 //
 
-import Foundation
-
 enum WeatherAPIConstants {
     static let scheme = "https"
     static let host = "api.openweathermap.org"

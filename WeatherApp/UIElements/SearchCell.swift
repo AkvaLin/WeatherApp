@@ -5,7 +5,6 @@
 //  Created by Никита Пивоваров on 24.03.2024.
 //
 
-import Foundation
 import UIKit
 
 class SearchCell: UITableViewCell {
@@ -60,7 +59,7 @@ class SearchCell: UITableViewCell {
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
     

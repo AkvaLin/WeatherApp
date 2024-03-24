@@ -5,7 +5,6 @@
 //  Created by Никита Пивоваров on 23.03.2024.
 //
 
-import Foundation
 import UIKit
 
 class ForecastCell: UITableViewCell {
@@ -98,7 +97,7 @@ class ForecastCell: UITableViewCell {
             weatherStackView.leadingAnchor.constraint(equalTo: weatherView.leadingAnchor, constant: 8),
             weatherStackView.trailingAnchor.constraint(equalTo: weatherView.trailingAnchor, constant: -8),
             weatherStackView.topAnchor.constraint(equalTo: weatherView.topAnchor),
-            weatherStackView.bottomAnchor.constraint(equalTo: weatherView.bottomAnchor),
+            weatherStackView.bottomAnchor.constraint(equalTo: weatherView.bottomAnchor)
         ])
         
         horizontalStackView.addArrangedSubview(dayOfWeekLabel)

@@ -5,7 +5,6 @@
 //  Created by Никита Пивоваров on 22.03.2024.
 //
 
-import Foundation
 import Combine
 import CoreLocation
 
@@ -30,8 +29,8 @@ class ViewModel: NSObject {
     
     public func updateCurrentData() {
         
-        var lat: CLLocationDegrees? = nil
-        var lon: CLLocationDegrees? = nil
+        var lat: CLLocationDegrees?
+        var lon: CLLocationDegrees?
         
         if let model = model, model.state == .search {
             lat = CLLocationDegrees(floatLiteral: model.lat)
@@ -47,12 +46,10 @@ class ViewModel: NSObject {
         guard let lat = lat, let lon = lon else { return }
         
         if model == nil || model?.state == .current {
-            locationManager.updateGeocode(lat: lat, lon: lon) { [weak self] (city, area, county) in
+            locationManager.updateGeocode(lat: lat, lon: lon) { [weak self] (area, county) in
                 guard let self = self else { return }
                 if let country = county {
-                    if let city = city {
-                        self.cityTitleText = city
-                    } else if let area = area {
+                    if let area = area {
                         self.cityTitleText = area
                     }
                     self.countryTitleText = country
@@ -76,7 +73,9 @@ class ViewModel: NSObject {
                 switch result {
                 case .success(let success):
                     self.weatherModel = self.convertToWeatherModel(from: success)
-                    self.addToCache(key: self.cityTitleText + "Weather", value: self.weatherModel)
+                    if let weatherModel = self.weatherModel {
+                        self.addToCache(key: self.cityTitleText + "Weather", value: weatherModel)
+                    }
                 case .failure(let failure):
                     NSLog("%@", failure.localizedDescription)
                 }
