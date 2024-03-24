@@ -96,23 +96,12 @@
 		F60D3A072BAB148B0062E2B5 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
-				F657DE932BAC4D370048FA60 /* Location */,
-				F60D3A252BAB5B800062E2B5 /* WeatherAPI */,
-				F60D3A1C2BAB32DE0062E2B5 /* Network */,
-				F6400EF52BB01F3F00C31739 /* SearchService */,
-				F60D3A082BAB148B0062E2B5 /* AppDelegate.swift */,
-				F60D3A0A2BAB148B0062E2B5 /* SceneDelegate.swift */,
-				F60D3A0C2BAB148B0062E2B5 /* ViewController.swift */,
-				F657DE9A2BADCEDE0048FA60 /* ViewModel.swift */,
-				F657DE9D2BADE1E50048FA60 /* WeatherModel.swift */,
-				F69169EB2BAED41600807DEB /* ForecastModel.swift */,
-				F6400EFA2BB0268700C31739 /* SearchViewModel.swift */,
-				F6400EFE2BB0273600C31739 /* SearchViewController.swift */,
+				F6400F042BB0610300C31739 /* App */,
+				F6400F072BB0617000C31739 /* Modules */,
 				F657DEA02BADE1FF0048FA60 /* UIElements */,
+				F6400F062BB0615D00C31739 /* Services */,
 				F60D3A2E2BAB63590062E2B5 /* Support */,
-				F60D3A112BAB148E0062E2B5 /* Assets.xcassets */,
-				F60D3A132BAB148E0062E2B5 /* LaunchScreen.storyboard */,
-				F60D3A162BAB148E0062E2B5 /* Info.plist */,
+				F6400F052BB0611800C31739 /* Resources */,
 			);
 			path = WeatherApp;
 			sourceTree = "<group>";
@@ -129,7 +118,7 @@
 		F60D3A252BAB5B800062E2B5 /* WeatherAPI */ = {
 			isa = PBXGroup;
 			children = (
-				F60D3A352BAB74BE0062E2B5 /* Model */,
+				F60D3A352BAB74BE0062E2B5 /* Models */,
 				F60D3A282BAB5BAE0062E2B5 /* WeatherAPIManager.swift */,
 				F60D3A262BAB5B920062E2B5 /* WeatherAPIConstants.swift */,
 				F60D3A362BAB7A5C0062E2B5 /* WeatherAPIErrors.swift */,
@@ -146,14 +135,14 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
-		F60D3A352BAB74BE0062E2B5 /* Model */ = {
+		F60D3A352BAB74BE0062E2B5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				F60D3A2A2BAB5BE30062E2B5 /* CurrentWeatherDTO.swift */,
 				F60D3A332BAB746E0062E2B5 /* ForecastDTO.swift */,
 				F60D3A312BAB74480062E2B5 /* DetailWeatherModels.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		F6400EF52BB01F3F00C31739 /* SearchService */ = {
@@ -163,6 +152,105 @@
 				F6400EF82BB0253D00C31739 /* LocalSearchModel.swift */,
 			);
 			path = SearchService;
+			sourceTree = "<group>";
+		};
+		F6400F042BB0610300C31739 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F60D3A082BAB148B0062E2B5 /* AppDelegate.swift */,
+				F60D3A0A2BAB148B0062E2B5 /* SceneDelegate.swift */,
+				F60D3A162BAB148E0062E2B5 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		F6400F052BB0611800C31739 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F60D3A112BAB148E0062E2B5 /* Assets.xcassets */,
+				F60D3A132BAB148E0062E2B5 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F6400F062BB0615D00C31739 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				F657DE932BAC4D370048FA60 /* Location */,
+				F60D3A252BAB5B800062E2B5 /* WeatherAPI */,
+				F60D3A1C2BAB32DE0062E2B5 /* Network */,
+				F6400EF52BB01F3F00C31739 /* SearchService */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		F6400F072BB0617000C31739 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				F6400F082BB0618100C31739 /* Main */,
+				F6400F0A2BB061A700C31739 /* Search */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		F6400F082BB0618100C31739 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				F6400F0B2BB061AF00C31739 /* Views */,
+				F6400F0C2BB061B800C31739 /* ViewModels */,
+				F6400F0D2BB061C000C31739 /* Models */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		F6400F0A2BB061A700C31739 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				F6400F0F2BB061E000C31739 /* Views */,
+				F6400F0E2BB061D800C31739 /* ViewModels */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		F6400F0B2BB061AF00C31739 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F60D3A0C2BAB148B0062E2B5 /* ViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F6400F0C2BB061B800C31739 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F657DE9A2BADCEDE0048FA60 /* ViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F6400F0D2BB061C000C31739 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F657DE9D2BADE1E50048FA60 /* WeatherModel.swift */,
+				F69169EB2BAED41600807DEB /* ForecastModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F6400F0E2BB061D800C31739 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F6400EFA2BB0268700C31739 /* SearchViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F6400F0F2BB061E000C31739 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F6400EFE2BB0273600C31739 /* SearchViewController.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		F657DE932BAC4D370048FA60 /* Location */ = {
@@ -422,7 +510,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5374B32457;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WeatherApp/Info.plist;
+				INFOPLIST_FILE = WeatherApp/App/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "App needs location to show current weather";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -455,7 +543,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5374B32457;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WeatherApp/Info.plist;
+				INFOPLIST_FILE = WeatherApp/App/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "App needs location to show current weather";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
