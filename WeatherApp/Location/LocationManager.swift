@@ -29,11 +29,7 @@ final class LocationManager: NSObject {
         }
     }
 
-    public func updateGeocode(completion: @escaping ((city: String?, area: String?, country: String?)) -> Void) {
-        guard let lat = lat, let lon = lon else { 
-            completion((nil, nil, nil))
-            return
-        }
+    public func updateGeocode(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping ((city: String?, area: String?, country: String?)) -> Void) {
         geoCoder.reverseGeocodeLocation(CLLocation(latitude: lat, longitude: lon)) { placemark, error in
             guard let placemark = placemark?.first else {
                 completion((nil, nil, nil))

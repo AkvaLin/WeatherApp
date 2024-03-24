@@ -15,37 +15,58 @@ class ViewModel: NSObject {
     @Published private(set) var forecastModel: [ForecastModel] = []
     @Published private(set) var countryTitleText = ""
     @Published private(set) var cityTitleText = ""
+    
+    var model: LocalSearchModel?
+    
     private let weatherApi = WeatherAPIManager()
     private let locationManager = LocationManager()
+    
     
     public func onAppear() {
         locationManager.setupDelegate(delegate: self)
         locationManager.requestAuthorization()
+        updateCurrentData()
     }
     
-    private func updateCurrentData() {
-        locationManager.updateCurrentLocation()
-        if let lat = locationManager.lat, let lon = locationManager.lon {
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.weatherApi.getCurrentWeather(lat: lat, lon: lon) { result in
-                    switch result {
-                    case .success(let success):
-                        self.weatherModel = self.convertToWeatherModel(from: success)
-                    case .failure(let failure):
-                        NSLog("%@", failure.localizedDescription)
-                    }
-                }
-                self.weatherApi.getForecast(lat: lat, lon: lon) { result in
-                    switch result {
-                    case .success(let success):
-                        self.forecastModel = self.convertToForecastModels(from: success)
-                    case .failure(let failure):
-                        NSLog("%@", failure.localizedDescription)
-                    }
+    public func updateCurrentData() {
+        
+        var lat: CLLocationDegrees? = nil
+        var lon: CLLocationDegrees? = nil
+        
+        if let model = model, model.state == .search {
+            lat = CLLocationDegrees(floatLiteral: model.lat)
+            lon = CLLocationDegrees(floatLiteral: model.lon)
+            cityTitleText = model.title
+            countryTitleText = model.subtitle
+        } else {
+            locationManager.updateCurrentLocation()
+            lat = locationManager.lat
+            lon = locationManager.lon
+        }
+        
+        guard let lat = lat, let lon = lon else { return }
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.weatherApi.getCurrentWeather(lat: lat, lon: lon) { result in
+                switch result {
+                case .success(let success):
+                    self.weatherModel = self.convertToWeatherModel(from: success)
+                case .failure(let failure):
+                    NSLog("%@", failure.localizedDescription)
                 }
             }
-            
-            locationManager.updateGeocode { [weak self] (city, area, county) in
+            self.weatherApi.getForecast(lat: lat, lon: lon) { result in
+                switch result {
+                case .success(let success):
+                    self.forecastModel = self.convertToForecastModels(from: success)
+                case .failure(let failure):
+                    NSLog("%@", failure.localizedDescription)
+                }
+            }
+        }
+        
+        if model == nil || model?.state == .current {
+            locationManager.updateGeocode(lat: lat, lon: lon) { [weak self] (city, area, county) in
                 guard let self = self else { return }
                 if let country = county {
                     if let city = city {

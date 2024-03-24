@@ -148,6 +148,7 @@ class ViewController: UIViewController {
         forecastTableView.register(ForecastCell.self, forCellReuseIdentifier: ForecastCell.identifier)
         
         bind()
+        setupNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -280,6 +281,16 @@ class ViewController: UIViewController {
         weatherDetailsStackView.addArrangedSubview(cloudiness)
     }
     
+    private func setupNavigationBar() {
+        
+        navigationController?.navigationBar.tintColor = .vkForeground
+        
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(search)),
+            UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(updateData))
+        ]
+    }
+    
     private func bind() {
         viewModel.$weatherModel
             .receive(on: RunLoop.main)
@@ -317,6 +328,16 @@ class ViewController: UIViewController {
             }.store(in: &cancellables)
     }
     
+    @objc private func updateData() {
+        viewModel.updateCurrentData()
+    }
+    
+    @objc private func search() {
+        let vc = SearchViewController()
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
@@ -339,6 +360,12 @@ extension ViewController: UITableViewDataSource {
                    maxTemperature: data.tempMax,
                    forecast: data.weather)
         return cell
+    }
+}
+
+extension ViewController: DataDelegate {
+    func sendData(data: LocalSearchModel) {
+        viewModel.model = data
     }
 }
 
