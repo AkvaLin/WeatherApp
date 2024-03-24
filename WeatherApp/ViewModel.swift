@@ -20,7 +20,7 @@ class ViewModel: NSObject {
     
     private let weatherApi = WeatherAPIManager()
     private let locationManager = LocationManager()
-    
+    private let cache = Cache<String, Any>()
     
     public func onAppear() {
         locationManager.setupDelegate(delegate: self)
@@ -46,25 +46,6 @@ class ViewModel: NSObject {
         
         guard let lat = lat, let lon = lon else { return }
         
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.weatherApi.getCurrentWeather(lat: lat, lon: lon) { result in
-                switch result {
-                case .success(let success):
-                    self.weatherModel = self.convertToWeatherModel(from: success)
-                case .failure(let failure):
-                    NSLog("%@", failure.localizedDescription)
-                }
-            }
-            self.weatherApi.getForecast(lat: lat, lon: lon) { result in
-                switch result {
-                case .success(let success):
-                    self.forecastModel = self.convertToForecastModels(from: success)
-                case .failure(let failure):
-                    NSLog("%@", failure.localizedDescription)
-                }
-            }
-        }
-        
         if model == nil || model?.state == .current {
             locationManager.updateGeocode(lat: lat, lon: lon) { [weak self] (city, area, county) in
                 guard let self = self else { return }
@@ -81,6 +62,36 @@ class ViewModel: NSObject {
                 }
             }
         }
+        
+        let dataFromCache = loadFromCache(city: cityTitleText)
+        
+        if let weatherModel = dataFromCache.weatherModel, let forecastModel = dataFromCache.forecastModel {
+            self.weatherModel = weatherModel
+            self.forecastModel = forecastModel
+            return
+        }
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.weatherApi.getCurrentWeather(lat: lat, lon: lon) { result in
+                switch result {
+                case .success(let success):
+                    self.weatherModel = self.convertToWeatherModel(from: success)
+                    self.addToCache(key: self.cityTitleText + "Weather", value: self.weatherModel)
+                case .failure(let failure):
+                    NSLog("%@", failure.localizedDescription)
+                }
+            }
+            self.weatherApi.getForecast(lat: lat, lon: lon) { result in
+                switch result {
+                case .success(let success):
+                    self.forecastModel = self.convertToForecastModels(from: success)
+                    self.addToCache(key: self.cityTitleText + "Forecast", value: self.forecastModel)
+                case .failure(let failure):
+                    NSLog("%@", failure.localizedDescription)
+                }
+            }
+        }
+        
     }
     
     private func convertToWeatherModel(from currentWeather: CurrentWeatherDTO) -> WeatherModel {
@@ -162,7 +173,7 @@ class ViewModel: NSObject {
             
             if currentDate != date.formatted(date: .numeric, time: .omitted) {
                 
-                models.append(ForecastModel(tempMin: tempMin, 
+                models.append(ForecastModel(tempMin: tempMin,
                                             tempMax: tempMax,
                                             dayOfWeek: date.formatted(.dateTime.weekday()),
                                             weather: weather))
@@ -225,6 +236,20 @@ class ViewModel: NSObject {
         } else {
             return ""
         }
+    }
+    
+    private func loadFromCache(city: String) -> (weatherModel: WeatherModel?, forecastModel: [ForecastModel]?) {
+        guard
+            let weatherModel = cache[city + "Weather"] as? WeatherModel,
+            let forecastModel = cache[city + "Forecast"] as? [ForecastModel]
+        else { 
+            return (nil, nil)
+        }
+        return (weatherModel, forecastModel)
+    }
+    
+    private func addToCache(key: String, value: Any) {
+        cache.insert(value, forKey: key)
     }
     
     func compassDirection(for heading: CLLocationDirection) -> String {
