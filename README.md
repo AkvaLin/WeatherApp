@@ -17,3 +17,13 @@
 | Search (light) | Search (dark) |
 | :-------------: |:-------------:| 
 | ![IMG_7100](https://github.com/AkvaLin/WeatherApp/assets/98354733/943fe96e-6fe5-49e1-b784-22c2773bff95) | ![IMG_7103](https://github.com/AkvaLin/WeatherApp/assets/98354733/7ac1189f-5c44-4ad7-b171-6ca82161add5) |
+
+## Technical Description
+
+- Swift
+- UIKit
+- MVVM
+- Combine
+- Core Location
+- MapKit
+- NSCache
